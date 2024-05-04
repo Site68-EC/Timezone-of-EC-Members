@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SCP Foundation Timezones</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background: linear-gradient(to bottom, #3333cc, #ffcc66);
+        color: white;
+        padding: 20px;
+        margin: 0;
+        min-height: 100vh;
+        box-sizing: border-box;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        font-weight: 300; /* lighter font weight */
+      }
+
+      .clock {
+        flex: 1 1 300px;
+        margin: 20px;
+        padding: 10px;
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.5s ease; /* smoother transition */
+        border: 1px solid rgba(255, 255, 255, 0.2); /* subtle border */
+      }
+
+      .clock:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+      }
+
+      .time {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      .name {
+        font-size: 16px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="clock" id="somatic-clock">
+      <div class="time" id="somatic"></div>
+      <div class="name">Somatic - UTC-7</div>
+    </div>
+    <div class="clock" id="chaos-clock">
+      <div class="time" id="chaos"></div>
+      <div class="name">Chaos - UTC+1</div>
+    </div>
+    <div class="clock" id="moral-clock">
+      <div class="time" id="moral"></div>
+      <div class="name">Moral - UTC+2</div>
+    </div>
+    <div class="clock" id="oversight-clock">
+      <div class="time" id="oversight"></div>
+      <div class="name">The Oversight - UTC+3</div>
+    </div>
+    <div class="clock" id="artemis-clock">
+      <div class="time" id="artemis"></div>
+      <div class="name">Artemis - UTC+3</div>
+    </div>
+    <div class="clock" id="faith-clock">
+      <div class="time" id="faith"></div>
+      <div class="name">Faith - UTC+8</div>
+    </div>
+    <div class="clock" id="redemption-clock">
+      <div class="time" id="redemption"></div>
+      <div class="name">Redemption - UTC+8</div>
+    </div>
+    <div class="clock" id="crispin-clock">
+      <div class="time" id="crispin"></div>
+      <div class="name">Crispin - UTC+8</div>
+    </div>
+    <div class="clock" id="rimuru-clock">
+      <div class="time" id="rimuru"></div>
+      <div class="name">Rimuru Tempest - UTC+8</div>
+    </div>
+    <div class="clock" id="azoth-clock">
+      <div class="time" id="azoth"></div>
+      <div class="name">Azoth - UTC+10</div>
+    </div>
+    <div class="clock" id="refusal-clock">
+      <div class="time" id="refusal"></div>
+      <div class="name">Refusal - UTC+11</div>
+    </div>
+
+    <script>
+      const clocks = [
+        { name: "Somatic", timezone: -7, id: "somatic" },
+        { name: "Chaos", timezone: 1, id: "chaos" },
+        { name: "Moral", timezone: 2, id: "moral" },
+        { name: "The Oversight", timezone: 3, id: "oversight" },
+        { name: "Artemis", timezone: 3, id: "artemis" },
+        { name: "Faith", timezone: 8, id: "faith" },
+        { name: "Redemption", timezone: 8, id: "redemption" },
+        { name: "Crispin", timezone: 8, id: "crispin" },
+        { name: "Rimuru Tempest", timezone: 8, id: "rimuru" },
+        { name: "Azoth", timezone: 10, id: "azoth" },
+        { name: "Refusal", timezone: 11, id: "refusal" },
+      ];
+
+      function updateTime(timezone, elementId) {
+        const date = new Date();
+        const utc = date.getTime() + date.getTimezoneOffset() * 60000;
+        const newDate = new Date(utc + 3600000 * timezone);
+        const hours = newDate.getHours();
+        const minutes = newDate.getMinutes();
+        const seconds = newDate.getSeconds();
+        let dayColor = "#ffcc66"; // Bright yellow
+        let nightColor = "#000033"; // Dark blue
+        let color;
+
+        switch (hours) {
+          case 1:
+            color = "#040333";
+            break;
+          case 2:
+            color = "#110d36";
+            break;
+          case 3:
+            color = "#251d3a";
+            break;
+          case 4:
+            color = "#3f333f";
+            break;
+          case 5:
+            color = "#5e4b45";
+            break;
+          case 6:
+            color = "#7f664c";
+            break;
+          case 7:
+            color = "#a08053";
+            break;
+          case 8:
+            color = "#bf9959";
+            break;
+          case 9:
+            color = "#d9ae5e";
+            break;
+          case 10:
+            color = "#edbe62";
+            break;
+          case 11:
+            color = "#fac865";
+            break;
+          case 12:
+            color = "#ffcc66";
+            break;
+          case 13:
+            color = "#fac865";
+            break;
+          case 14:
+            color = "#edbe62";
+            break;
+          case 15:
+            color = "#d9ae5e";
+            break;
+          case 16:
+            color = "#bf9959";
+            break;
+          case 17:
+            color = "#a08053";
+            break;
+          case 18:
+            color = "#7f664c";
+            break;
+          case 19:
+            color = "#5e4b45";
+            break;
+          case 20:
+            color = "#3f333f";
+            break;
+          case 21:
+            color = "#251d3a";
+            break;
+          case 22:
+            color = "#110d36";
+            break;
+          case 23:
+            color = "#040333";
+            break;
+          case 24:
+            color = "#000033";
+            break;
+          default:
+            color = "#ffffff"; // White (fallback)
+        }
+
+        const rgbColor = `rgb(${parseInt(color.slice(1, 3), 16)}, ${parseInt(
+          color.slice(3, 5),
+          16
+        )}, ${parseInt(color.slice(5, 7), 16)})`;
+
+        document.getElementById(elementId).textContent =
+          newDate.toLocaleTimeString();
+        document.getElementById(elementId + "-clock").style.backgroundColor =
+          rgbColor;
+      }
+
+      setInterval(() => {
+        clocks.forEach(({ timezone, id }) => {
+          updateTime(timezone, id);
+        });
+      }, 1000);
+    </script>
+  </body>
+</html>
