@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>SCP Foundation Timezones</title>
+    <title>EC Timezones</title>
     <style>
       body {
         font-family: Arial, sans-serif;
         text-align: center;
-        background: linear-gradient(to bottom, #3333cc, #ffcc66);
+        background: radial-gradient(circle at center, #333333, #000000);
         color: white;
         padding: 20px;
         margin: 0;
@@ -16,18 +16,19 @@
         flex-wrap: wrap;
         justify-content: center;
         align-items: center;
-        font-weight: 300; /* lighter font weight */
+        font-weight: 300;
+        transition: background 1s ease;
       }
 
       .clock {
         flex: 1 1 300px;
         margin: 20px;
-        padding: 10px;
-        border-radius: 5px;
+        padding: 20px;
+        border-radius: 15px;
         background-color: rgba(255, 255, 255, 0.1);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         transition: background-color 0.5s ease; /* smoother transition */
-        border: 1px solid rgba(255, 255, 255, 0.2); /* subtle border */
+        border: 3px solid rgba(255, 255, 255, 0.2); /* subtle border */
       }
 
       .clock:hover {
@@ -35,13 +36,40 @@
       }
 
       .time {
-        font-size: 24px;
-        font-weight: bold;
+        font-size: 36px;
+        font-weight: 500;
+        letter-spacing: 1px;
         margin-bottom: 10px;
       }
 
       .name {
+        font-size: 18px;
+        opacity: 0.8;
+      }
+
+      .timezone {
         font-size: 16px;
+        opacity: 0.6;
+        margin-top: 10px;
+      }
+
+      @media (max-width: 900px) {
+        .clock {
+          flex: 1 1 200px;
+          padding: 15px;
+        }
+
+        .time {
+          font-size: 28px;
+        }
+
+        .name {
+          font-size: 16px;
+        }
+
+        .timezone {
+          font-size: 14px;
+        }
       }
     </style>
   </head>
@@ -49,58 +77,73 @@
   <body>
     <div class="clock" id="somatic-clock">
       <div class="time" id="somatic"></div>
-      <div class="name">Somatic - UTC-7</div>
+      <div class="name">Somatic</div>
+      <div class="timezone">UTC-7</div>
     </div>
     <div class="clock" id="chaos-clock">
       <div class="time" id="chaos"></div>
-      <div class="name">Chaos - UTC+1</div>
+      <div class="name">Chaos</div>
+      <div class="timezone">UTC+2</div>
     </div>
     <div class="clock" id="moral-clock">
       <div class="time" id="moral"></div>
-      <div class="name">Moral - UTC+2</div>
+      <div class="name">Moral</div>
+      <div class="timezone">UTC+2</div>
     </div>
     <div class="clock" id="oversight-clock">
       <div class="time" id="oversight"></div>
-      <div class="name">The Oversight - UTC+3</div>
+      <div class="name">The Oversight</div>
+      <div class="timezone">UTC+3</div>
     </div>
     <div class="clock" id="artemis-clock">
       <div class="time" id="artemis"></div>
-      <div class="name">Artemis - UTC+3</div>
+      <div class="name">Artemis</div>
+      <div class="timezone">UTC+3</div>
     </div>
     <div class="clock" id="faith-clock">
       <div class="time" id="faith"></div>
-      <div class="name">Faith - UTC+8</div>
+      <div class="name">Faith</div>
+      <div class="timezone">UTC+8</div>
     </div>
     <div class="clock" id="redemption-clock">
       <div class="time" id="redemption"></div>
-      <div class="name">Redemption - UTC+8</div>
+      <div class="name">Redemption</div>
+      <div class="timezone">UTC+8</div>
     </div>
     <div class="clock" id="azoth-clock">
       <div class="time" id="azoth"></div>
-      <div class="name">Azoth - UTC+10</div>
+      <div class="name">Azoth</div>
+      <div class="timezone">UTC+10</div>
     </div>
     <div class="clock" id="refusal-clock">
       <div class="time" id="refusal"></div>
-      <div class="name">Refusal - UTC+11</div>
+      <div class="name">Refusal</div>
+      <div class="timezone">UTC+11</div>
     </div>
 
     <script>
       const clocks = [
-        { name: "Somatic", timezone: -7, id: "somatic" },
-        { name: "Chaos", timezone: 1, id: "chaos" },
-        { name: "Moral", timezone: 2, id: "moral" },
-        { name: "The Oversight", timezone: 3, id: "oversight" },
-        { name: "Artemis", timezone: 3, id: "artemis" },
-        { name: "Faith", timezone: 8, id: "faith" },
-        { name: "Redemption", timezone: 8, id: "redemption" },
-        { name: "Azoth", timezone: 10, id: "azoth" },
-        { name: "Refusal", timezone: 11, id: "refusal" },
+        { name: "Somatic", id: "somatic" },
+        { name: "Chaos", id: "chaos" },
+        { name: "Moral", id: "moral" },
+        { name: "The Oversight", id: "oversight" },
+        { name: "Artemis", id: "artemis" },
+        { name: "Faith", id: "faith" },
+        { name: "Redemption", id: "redemption" },
+        { name: "Azoth", id: "azoth" },
+        { name: "Refusal", id: "refusal" },
       ];
 
-      function updateTime(timezone, elementId) {
+      function updateTime(elementId) {
         const date = new Date();
         const utc = date.getTime() + date.getTimezoneOffset() * 60000;
-        const newDate = new Date(utc + 3600000 * timezone);
+        const timezoneDiv = document
+          .getElementById(elementId + "-clock")
+          .getElementsByClassName("timezone")[0];
+        const timezoneOffset = parseInt(
+          timezoneDiv.textContent.replace("UTC", "")
+        );
+        const newDate = new Date(utc + 3600000 * timezoneOffset);
         const hours = newDate.getHours();
         const minutes = newDate.getMinutes();
         const seconds = newDate.getSeconds();
@@ -200,10 +243,16 @@
       }
 
       setInterval(() => {
-        clocks.forEach(({ timezone, id }) => {
-          updateTime(timezone, id);
+        clocks.forEach(({ id }) => {
+          updateTime(id);
         });
-      }, 1000);
+      }, 10);
+
+      window.onload = () => {
+        clocks.forEach(({ id }) => {
+          updateTime(id);
+        });
+      };
     </script>
   </body>
 </html>
