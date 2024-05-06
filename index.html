@@ -18,6 +18,7 @@
         align-items: center;
         font-weight: 300;
         transition: background 1s ease;
+        margin-top: 22px;
       }
 
       .clock {
@@ -70,11 +71,129 @@
         .timezone {
           font-size: 14px;
         }
+
+        #statusIndicator {
+          display: none;
+        }
+
+        .top-panel {
+          justify-content: center;
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .button-container {
+          flex-direction: row;
+          margin-bottom: 10px;
+        }
+
+        .button-container button {
+          margin-right: 5px;
+          margin-bottom: 0;
+        }
+      }
+      .toggle-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1;
+      }
+
+      #toggleButton {
+        background-color: rgba(255, 255, 255, 0.3);
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        color: white;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      #toggleButton:hover {
+        background-color: rgba(255, 255, 255, 0.5);
+      }
+
+      .top-panel #toggleButton {
+        background-color: rgba(255, 255, 255, 0.3);
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        color: white;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .top-panel #toggleButton:hover {
+        background-color: rgba(255, 255, 255, 0.5);
+      }
+
+      .top-panel button {
+        background-color: rgba(255, 255, 255, 0.3);
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        color: white;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin: 0 5px;
+      }
+
+      .top-panel button:hover {
+        background-color: rgba(255, 255, 255, 0.5);
+      }
+      .top-panel {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 10px;
+        box-sizing: border-box;
+        z-index: 1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .button-container {
+        display: flex;
+      }
+
+      .button-container button {
+        background-color: rgba(255, 255, 255, 0.3);
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        color: white;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-right: 5px;
+      }
+
+      .button-container button:hover {
+        background-color: rgba(255, 255, 255, 0.5);
+      }
+
+      #statusIndicator {
+        color: white;
+        font-size: 16px;
+        margin-right: 10px;
       }
     </style>
   </head>
 
   <body>
+    <div class="top-panel">
+      <div class="button-container">
+        <button id="toggleButton">Discord Usernames</button>
+        <button id="robloxToggleButton">Roblox Usernames</button>
+      </div>
+      <div id="statusIndicator">Displaying Codenames</div>
+    </div>
     <div class="clock" id="somatic-clock">
       <div class="name">Somatic</div>
       <div class="time" id="somatic"></div>
@@ -123,15 +242,60 @@
 
     <script>
       const clocks = [
-        { name: "Somatic", id: "somatic" },
-        { name: "Chaos", id: "chaos" },
-        { name: "Moral", id: "moral" },
-        { name: "The Oversight", id: "oversight" },
-        { name: "Artemis", id: "artemis" },
-        { name: "Faith", id: "faith" },
-        { name: "Redemption", id: "redemption" },
-        { name: "Havoc", id: "havoc" },
-        { name: "Refusal", id: "refusal" },
+        {
+          name: "Somatic",
+          id: "somatic",
+          discord: "thabasder",
+          roblox: "ThaBasder",
+        },
+        {
+          name: "Chaos",
+          id: "chaos",
+          discord: "schwoeraufgott",
+          roblox: "LOK22236",
+        },
+        {
+          name: "Moral",
+          id: "moral",
+          discord: "enderfright",
+          roblox: "EnderFright2000",
+        },
+        {
+          name: "The Oversight",
+          id: "oversight",
+          discord: "oversight__",
+          roblox: "eioeiriujwe12",
+        },
+        {
+          name: "Artemis",
+          id: "artemis",
+          discord: "nightseen",
+          roblox: "mamut_oyunda031",
+        },
+        {
+          name: "Faith",
+          id: "faith",
+          discord: "itsexilled26",
+          roblox: "ProMiMikaGamerTV",
+        },
+        {
+          name: "Redemption",
+          id: "redemption",
+          discord: "accell.crow",
+          roblox: "jaspherox123",
+        },
+        {
+          name: "Havoc",
+          id: "havoc",
+          discord: "IloveDumplings",
+          roblox: "DatsSquibblz",
+        },
+        {
+          name: "Refusal",
+          id: "refusal",
+          discord: "i_refuseto",
+          roblox: "msaadroblox",
+        },
       ];
 
       function updateTime(elementId) {
@@ -242,6 +406,53 @@
           rgbColor;
       }
 
+      const toggleButton = document.getElementById("toggleButton");
+      const robloxToggleButton = document.getElementById("robloxToggleButton");
+      const statusIndicator = document.getElementById("statusIndicator");
+      let showUsernames = false;
+      let showRobloxUsernames = false;
+
+      toggleButton.addEventListener("click", () => {
+        showUsernames = !showUsernames;
+        showRobloxUsernames = false; // Reset Roblox usernames
+        clocks.forEach(({ id, name, discord, roblox }) => {
+          const nameElement = document
+            .getElementById(`${id}-clock`)
+            .getElementsByClassName("name")[0];
+          if (showUsernames) {
+            nameElement.textContent = discord || name;
+            toggleButton.textContent = "Codenames";
+            robloxToggleButton.textContent = "Roblox Usernames";
+            statusIndicator.textContent = "Displaying Discord Usernames";
+          } else {
+            nameElement.textContent = name;
+            toggleButton.textContent = "Discord Usernames";
+            robloxToggleButton.textContent = "Roblox Usernames";
+            statusIndicator.textContent = "Displaying Codenames";
+          }
+        });
+      });
+
+      robloxToggleButton.addEventListener("click", () => {
+        showRobloxUsernames = !showRobloxUsernames;
+        showUsernames = false; // Reset Discord usernames
+        clocks.forEach(({ id, name, roblox }) => {
+          const nameElement = document
+            .getElementById(`${id}-clock`)
+            .getElementsByClassName("name")[0];
+          if (showRobloxUsernames) {
+            nameElement.textContent = roblox || name;
+            robloxToggleButton.textContent = "Codenames";
+            toggleButton.textContent = "Discord Usernames";
+            statusIndicator.textContent = "Displaying Roblox Usernames";
+          } else {
+            nameElement.textContent = name;
+            robloxToggleButton.textContent = "Roblox Usernames";
+            toggleButton.textContent = "Discord Usernames";
+            statusIndicator.textContent = "Displaying Codenames";
+          }
+        });
+      });
       setInterval(() => {
         clocks.forEach(({ id }) => {
           updateTime(id);
