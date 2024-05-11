@@ -91,6 +91,9 @@
           margin-right: 5px;
           margin-bottom: 0;
         }
+        .github-link {
+          display: none;
+        }
       }
       .toggle-container {
         position: fixed;
@@ -183,6 +186,15 @@
         font-size: 16px;
         margin-right: 10px;
       }
+
+      .github-link {
+        height: 32px;
+      }
+
+      .github-link img {
+        width: 100%;
+        height: 100%;
+      }
     </style>
   </head>
 
@@ -192,9 +204,17 @@
         <button id="toggleButton">Discord Usernames</button>
         <button id="robloxToggleButton">Roblox Usernames</button>
       </div>
+      <a
+        href="https://github.com/Site68-EC/Timezone-of-EC-Members"
+        target="_blank"
+        class="github-link">
+        <img
+          src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png"
+          alt="GitHub" />
+      </a>
       <div id="statusIndicator">Displaying Codenames</div>
     </div>
-    <div class="clock" id="somatic-clock">
+    <!--<div class="clock" id="somatic-clock">
       <div class="name">Somatic</div>
       <div class="time" id="somatic"></div>
       <div class="timezone">UTC-7</div>
@@ -229,6 +249,11 @@
       <div class="time" id="redemption"></div>
       <div class="timezone">UTC+8</div>
     </div>
+    <div class="clock" id="lauren-clock">
+      <div class="name">Lauren</div>
+      <div class="time" id="lauren"></div>
+      <div class="timezone">UTC+8</div>
+    </div>
     <div class="clock" id="havoc-clock">
       <div class="name">Havoc</div>
       <div class="time" id="havoc"></div>
@@ -238,7 +263,7 @@
       <div class="name">Refusal</div>
       <div class="time" id="refusal"></div>
       <div class="timezone">UTC+11</div>
-    </div>
+    </div>-->
 
     <script>
       const clocks = [
@@ -247,56 +272,78 @@
           id: "somatic",
           discord: "thabasder",
           roblox: "ThaBasder",
+          timezone: "UTC-7",
         },
         {
           name: "Chaos",
           id: "chaos",
           discord: "schwoeraufgott",
           roblox: "LOK22236",
+          timezone: "UTC+2",
         },
         {
           name: "Moral",
           id: "moral",
           discord: "enderfright",
           roblox: "EnderFright2000",
+          timezone: "UTC+2",
         },
         {
           name: "The Oversight",
           id: "oversight",
           discord: "oversight__",
           roblox: "eioeiriujwe12",
+          timezone: "UTC+3",
         },
         {
           name: "Artemis",
           id: "artemis",
           discord: "nightseen",
           roblox: "mamut_oyunda031",
+          timezone: "UTC+3",
         },
         {
           name: "Faith",
           id: "faith",
           discord: "itsexilled26",
           roblox: "ProMiMikaGamerTV",
+          timezone: "UTC+8",
         },
         {
           name: "Redemption",
           id: "redemption",
           discord: "accell.crow",
           roblox: "jaspherox123",
+          timezone: "UTC+8",
+        },
+        {
+          name: "Lauren",
+          id: "lauren",
+          discord: "andrearaai",
+          roblox: "Millionpetpld",
+          timezone: "UTC+8",
         },
         {
           name: "Havoc",
           id: "havoc",
           discord: "IloveDumplings",
           roblox: "DatsSquibblz",
+          timezone: "UTC+10",
         },
         {
           name: "Refusal",
           id: "refusal",
           discord: "i_refuseto",
           roblox: "msaadroblox",
+          timezone: "UTC+11",
         },
-      ];
+      ].sort((a, b) => {
+        const [aOffset, bOffset] = [
+          a.timezone.replace("UTC", ""),
+          b.timezone.replace("UTC", ""),
+        ];
+        return parseFloat(aOffset) - parseFloat(bOffset);
+      });
 
       function updateTime(elementId) {
         const date = new Date();
@@ -460,7 +507,31 @@
       }, 10);
 
       window.onload = () => {
-        clocks.forEach(({ id }) => {
+        const clockContainer = document.querySelector("body");
+
+        clocks.forEach(({ name, id, timezone }) => {
+          const clockDiv = document.createElement("div");
+          clockDiv.classList.add("clock");
+          clockDiv.id = `${id}-clock`;
+
+          const nameDiv = document.createElement("div");
+          nameDiv.classList.add("name");
+          nameDiv.textContent = name;
+
+          const timeDiv = document.createElement("div");
+          timeDiv.classList.add("time");
+          timeDiv.id = id;
+
+          const timezoneDiv = document.createElement("div");
+          timezoneDiv.classList.add("timezone");
+          timezoneDiv.textContent = timezone;
+
+          clockDiv.appendChild(nameDiv);
+          clockDiv.appendChild(timeDiv);
+          clockDiv.appendChild(timezoneDiv);
+
+          clockContainer.appendChild(clockDiv);
+
           updateTime(id);
         });
       };
